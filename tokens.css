@@ -1,0 +1,150 @@
+/* SINGLE SOURCE OF TRUTH — github.com/Amplifygov/govtrue-design-tokens
+ * =============================================================================
+ * This file is the canonical GovTrue token contract. Consumer repos (Platform,
+ * Codify, Archive) vendor a BYTE-IDENTICAL copy and guard it with a drift-check
+ * against a pinned, IMMUTABLE version tag (vX.Y.Z).
+ *
+ * DO NOT EDIT a vendored copy. To change tokens: edit HERE, cut a NEW version
+ * tag, then bump each consumer's pinned tag and re-run its sync script. Tags are
+ * immutable — never moved or re-pointed, and there is no moving "latest" tag.
+ * =============================================================================
+ *
+ * GovTrue Design Tokens — authenticated product-shell theme
+ * -----------------------------------------------------------------------------
+ * Standalone, publishable contract. Two layers:
+ *   1. RAW     — the palette. Authoritative HEX values (these win).
+ *   2. SEMANTIC — what components consume. Never reference raw outside this file.
+ *
+ * Components in ANY consuming repo must reference SEMANTIC tokens only, never
+ * the raw --gt-* palette. The raw layer is an implementation detail of this
+ * contract and may be re-mapped.
+ *
+ * Each raw color also ships an exact HSL-triplet mirror (--gt-*-hsl), e.g.
+ * `--gt-navy-hsl: 214 68% 14%`. This exists for consumers built on the
+ * shadcn/ui convention of `hsl(var(--token))` and relative-color derivations
+ * (`hsl(from hsl(var(--x)) ...)`), which require a bare H S L triplet rather
+ * than a hex literal. The hex value is authoritative; the mirror is a derived,
+ * exact conversion of it. Keep them in sync if the palette ever changes.
+ *
+ * Light mode only. No dark theme — navy is the shell/chrome, not a color scheme.
+ * ============================================================================= */
+
+:root {
+  /* ----------------------------------------------------------------------- *
+   * RAW PALETTE (hex authoritative · hsl mirror derived)
+   * ----------------------------------------------------------------------- */
+
+  /* Surfaces & neutrals */
+  --gt-navy:            #0B1F3A;  --gt-navy-hsl:        214 68% 14%;
+  --gt-navy-2:          #142A4C;  --gt-navy-2-hsl:      216 58% 19%;
+  --gt-warm-white:      #FAFAF7;  --gt-warm-white-hsl:   60 23% 97%;
+  --gt-cream:           #F4F1EA;  --gt-cream-hsl:        42 31% 94%;
+  --gt-white:           #FFFFFF;  --gt-white-hsl:         0  0% 100%;
+  --gt-ink:             #1A1A1A;  --gt-ink-hsl:           0  0% 10%;
+  --gt-gray:            #6B6B6B;  --gt-gray-hsl:          0  0% 42%;
+  --gt-warm-gray:       #E5E1D8;  --gt-warm-gray-hsl:    42 20% 87%;
+
+  /* Teal accent ramp */
+  --gt-teal:            #1D9E75;  --gt-teal-hsl:        161 69% 37%;
+  --gt-teal-deep:       #0F6E56;  --gt-teal-deep-hsl:   165 76% 25%;
+  --gt-teal-press:      #0B5743;  --gt-teal-press-hsl:  164 78% 19%;
+
+  /* On-navy foregrounds (defined explicitly for the shell — not in the spec) */
+  --gt-on-navy:         #FAFAF7;  --gt-on-navy-hsl:      60 23% 97%;
+  --gt-on-navy-muted:   #9AA6BD;  --gt-on-navy-muted-hsl:        219 21% 67%;
+  --gt-on-navy-accent:  #3DBE96;  --gt-on-navy-accent-hsl:       161 51% 49%;
+
+  /* ----------------------------------------------------------------------- *
+   * SEMANTIC LAYER — components consume THESE.
+   * ----------------------------------------------------------------------- */
+
+  /* Shell / chrome — navy. Rail + top bar ONLY. No full-width interior bands. */
+  --surface-shell:         var(--gt-navy);     /* rail, top bar */
+  --surface-shell-raised:  var(--gt-navy-2);   /* active nav, hover, on-navy chips */
+
+  /* Workspace + cards */
+  --surface-workspace:     var(--gt-warm-white); /* default app background */
+  --surface-card:          var(--gt-white);      /* steps off cream sections */
+  --border-hairline:       var(--gt-warm-gray);
+
+  /* Actions */
+  --action-primary:        var(--gt-teal-deep);
+  --action-primary-hover:  var(--gt-teal);
+  --action-primary-press:  var(--gt-teal-press);
+
+  /* Accents */
+  --accent:                var(--gt-teal);       /* active state, links */
+  /* Reserved for federated research/citation surfaces (Archive, Codify).
+   * NOT consumed in Platform — defined so downstream repos inherit it from the
+   * same contract. Own token even though it currently equals --accent, so the
+   * citation highlight can diverge later without touching the accent color. */
+  --accent-citation:       var(--gt-teal);
+  /* Companions to --accent-citation for citation/source surfaces (badges, source
+   * chips, footnote refs). Defined once here; render only on the federated
+   * citation repos (Codify, Archive), not Platform. Light-only. */
+  --accent-citation-surface: color-mix(in srgb, var(--accent-citation) 12%, var(--surface-card)); /* tinted badge background */
+  --accent-citation-hover:   var(--gt-teal-deep); /* deepen on hover/active */
+
+  /* Text */
+  --text-body:             var(--gt-ink);
+  --text-muted:            var(--gt-gray);
+
+  /* On-navy foregrounds (verified AA — see README for ratios) */
+  --on-navy:               var(--gt-on-navy);
+  --on-navy-muted:         var(--gt-on-navy-muted);
+  --on-navy-accent:        var(--gt-on-navy-accent);
+
+  /* Icon chips — per-context treatment (a tint tuned for cream goes muddy on
+   * navy, so the two contexts diverge deliberately):
+   *   on-navy (rail):   teal mixed into raised navy, lifted teal icon
+   *   on-light (cards): pale teal on white, teal-deep icon */
+  --chip-on-navy-bg:       color-mix(in srgb, var(--accent) 18%, var(--surface-shell-raised));
+  --chip-on-navy-fg:       var(--on-navy-accent);
+  --chip-on-light-bg:      color-mix(in srgb, var(--accent) 12%, var(--surface-card));
+  --chip-on-light-fg:      var(--action-primary);
+
+  /* ----------------------------------------------------------------------- *
+   * SPACING — 4px scale
+   * ----------------------------------------------------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 128px;
+
+  /* Authenticated section rhythm is tighter than the marketing site
+   * (which runs 64–120px). Product pages breathe at 24–32px. */
+  --section-py: var(--space-6); /* 32px — clamp down to --space-5 (24px) when dense */
+
+  /* ----------------------------------------------------------------------- *
+   * RADII — 6 / 10 / 14 / 20 / pill
+   * ----------------------------------------------------------------------- */
+  --radius-sm:     6px;
+  --radius-button: 10px;
+  --radius-card:   14px;
+  --radius-panel:  20px;
+  --radius-pill:   9999px;
+
+  /* ----------------------------------------------------------------------- *
+   * SHADOWS — warm, tinted from the navy hex (never neutral gray; gray reads
+   * cold against cream). Cards carry NO shadow at rest — md on hover only.
+   * ----------------------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px rgba(11, 31, 58, 0.06);
+  --shadow-md: 0 8px 24px rgba(11, 31, 58, 0.10);
+  --shadow-lg: 0 16px 34px rgba(11, 31, 58, 0.12);
+  --shadow-xl: 0 22px 48px rgba(11, 31, 58, 0.16);
+
+  /* ----------------------------------------------------------------------- *
+   * MOTION — functional, never decorative. Three durations, two easings.
+   * ----------------------------------------------------------------------- */
+  --dur-fast: 140ms; /* color & opacity */
+  --dur-base: 220ms; /* size & transform */
+  --dur-slow: 420ms; /* page-level enters */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
