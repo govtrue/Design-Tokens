@@ -83,6 +83,7 @@
    * chips, footnote refs). Defined once here; render only on the federated
    * citation repos (Codify, Archive), not Platform. Light-only. */
   --accent-citation-surface: color-mix(in srgb, var(--accent-citation) 12%, var(--surface-card)); /* tinted badge background */
+  --accent-citation-fg:      var(--gt-teal-deep); /* AA-legible text/numerals on -surface (5.42:1) and white (6.20:1); --accent-citation stays the highlight for borders/icons */
   --accent-citation-hover:   var(--gt-teal-deep); /* deepen on hover/active */
 
   /* Text */
