@@ -134,15 +134,16 @@
 
   /* Per-role scale — each role carries its face + size + leading + weight. */
 
-  /* section-number — the mono identifier (§ 1.02.010) */
+  /* section-number — the small mono identifier/locator (§ 1.02.010); sits BELOW the
+   * catchline in the hierarchy, reading as the section's label rather than its heading */
   --type-section-number-family:  var(--font-mono);
-  --type-section-number-size:    1.5rem;   /* 24px */
+  --type-section-number-size:    0.9375rem; /* 15px */
   --type-section-number-leading: 1.25;
   --type-section-number-weight:  500;
 
-  /* catchline — the bold serif section title */
+  /* catchline — the dominant serif section title (heading; larger than the locator) */
   --type-catchline-family:  var(--font-serif-reading);
-  --type-catchline-size:    1.5rem;   /* 24px */
+  --type-catchline-size:    1.6875rem; /* 27px */
   --type-catchline-leading: 1.3;
   --type-catchline-weight:  500;
 
