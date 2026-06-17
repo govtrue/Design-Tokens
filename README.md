@@ -3,7 +3,9 @@
 **Single source of truth** for GovTrue's authenticated product-shell design
 system: navy app shell, warm-white workspace, cream/white cards, a teal accent,
 Inter, a 4px spacing scale, 10/14/20px radii, warm navy-tinted shadows. Light
-mode only.
+mode only. It also carries the **legal-document type scale** (font families +
+per-role typography) for the federated citation/document surfaces — the Codify
+public code portal that renders the law as a typeset document.
 
 This repo is **colors + type only** — no components, no build step, no IP — so it
 is public, which lets consumer repos vendor it with **zero build-time
@@ -54,17 +56,35 @@ node scripts/check-design-tokens.mjs   # CI: assert vendored copy == pinned tag
 
 | Group | Tokens |
 |-------|--------|
-| Surfaces | `--surface-shell`, `--surface-shell-raised`, `--surface-workspace`, `--surface-card`, `--border-hairline` |
+| Surfaces | `--surface-shell`, `--surface-shell-raised`, `--surface-workspace`, `--surface-card`, `--surface-document-meta`, `--border-hairline` |
 | Actions | `--action-primary`, `--action-primary-hover`, `--action-primary-press` |
 | Accent | `--accent` (active/links) |
 | Citation | `--accent-citation`, `--accent-citation-surface`, `--accent-citation-hover` — render only on federated citation surfaces (Codify, Archive), not Platform |
 | Text | `--text-body`, `--text-muted` |
 | On-navy | `--on-navy`, `--on-navy-muted`, `--on-navy-accent` (AA-verified on navy + raised navy) |
 | Chips | `--chip-on-navy-*`, `--chip-on-light-*` |
+| Typography | `--font-serif-reading`, `--font-sans`, `--font-mono`; per-role `--type-*` scale (`section-number`, `catchline`, `body`, `subsection`, `metadata-label`, `breadcrumb`, `toc`) |
 | Scale / radii / shadow / motion | `--space-*`, `--radius-*`, `--shadow-*`, `--dur-*`, `--ease-*` |
 
 Light mode only — consumers' `.dark` blocks stay dormant; the contract is not
 expanded to dark.
+
+## Typography (legal-document type scale)
+
+Three faces, named so the SSOT — not consumer CSS — owns which face a role uses:
+`--font-serif-reading` (the reading face, **Source Serif 4**), `--font-sans`
+(Inter, chrome) and `--font-mono` (identifiers). The per-role `--type-*` scale
+bakes a face + size + leading + weight into each role (`body`, `catchline`,
+`section-number`, `subsection` — serif text with a mono enumerator —,
+`metadata-label`, `breadcrumb`, `toc`), so a consumer applies a role rather than
+hand-picking a font. **Two weights only** — 400 regular, 500 medium (no 600/700).
+Sizes are `rem` (they scale with the user's root font-size).
+
+The reading face is **self-hosted `woff2` by the consumer** (the Codify Phase 2
+PR), **not** a CDN — this repo names the family + a Georgia fallback but, per its
+no-build/no-IP charter, ships no font files. `--font-serif-reading` degrades to
+Georgia until the woff2 loads. Type tokens are not colors, so they carry no `*-hsl`
+mirror.
 
 ## Accessibility (WCAG AA, verified against the actual backing surface)
 
