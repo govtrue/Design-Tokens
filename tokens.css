@@ -65,6 +65,12 @@
   /* Workspace + cards */
   --surface-workspace:     var(--gt-warm-white); /* default app background */
   --surface-card:          var(--gt-white);      /* steps off cream sections */
+  /* Document surface tiers (Codify public legal-document portal). Three distinct tiers:
+   *   paper    = --surface-card      (white)      — the document body "paper"
+   *   nav      = --surface-workspace (warm-white) — the page / contents column
+   *   metadata = --surface-document-meta (cream)  — metadata bands, this tier
+   * No new color: this aliases the existing raw cream (its hsl mirror already ships). */
+  --surface-document-meta: var(--gt-cream);      /* metadata tier — third document surface */
   --border-hairline:       var(--gt-warm-gray);
 
   /* Actions */
@@ -103,6 +109,74 @@
   --chip-on-navy-fg:       var(--on-navy-accent);
   --chip-on-light-bg:      color-mix(in srgb, var(--accent) 12%, var(--surface-card));
   --chip-on-light-fg:      var(--action-primary);
+
+  /* ----------------------------------------------------------------------- *
+   * TYPOGRAPHY — font families + the legal-document type scale
+   *
+   * Serves the federated citation/document surfaces (Codify public code portal),
+   * where the law renders as a typeset legal document. The SSOT owns which-face-
+   * per-role, so each scale role bakes in its FAMILY + size + leading + weight —
+   * consumers apply a role, not a hand-picked font.
+   *
+   * The reading face is Source Serif 4, a WEBFONT the consumer SELF-HOSTS as woff2
+   * (Codify Phase 2 PR) — NOT a CDN. This contract only NAMES the family + a
+   * Georgia fallback that renders until the woff2 loads; it ships no font files
+   * (the repo is colors + type, no build, no IP). Two weights only: 400 regular,
+   * 500 medium (no 600/700). Type tokens are not colors — no hsl mirror. Sizes are
+   * rem so they scale with the user's root font-size (px equivalents at ~16px root
+   * noted inline).
+   * ----------------------------------------------------------------------- */
+
+  /* Families — the three faces. */
+  --font-serif-reading: "Source Serif 4", Georgia, "Times New Roman", serif; /* reading: body, catchlines, subsection text (self-hosted woff2 by the consumer) */
+  --font-sans:          "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; /* chrome: header, ToC, buttons, metadata */
+  --font-mono:          ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace; /* identifiers: section numbers, enumerators */
+
+  /* Per-role scale — each role carries its face + size + leading + weight. */
+
+  /* section-number — the small mono identifier/locator (§ 1.02.010); sits BELOW the
+   * catchline in the hierarchy, reading as the section's label rather than its heading */
+  --type-section-number-family:  var(--font-mono);
+  --type-section-number-size:    0.9375rem; /* 15px */
+  --type-section-number-leading: 1.25;
+  --type-section-number-weight:  500;
+
+  /* catchline — the dominant serif section title (heading; larger than the locator) */
+  --type-catchline-family:  var(--font-serif-reading);
+  --type-catchline-size:    1.6875rem; /* 27px */
+  --type-catchline-leading: 1.3;
+  --type-catchline-weight:  500;
+
+  /* body — the law text */
+  --type-body-family:  var(--font-serif-reading);
+  --type-body-size:    1.0625rem; /* 17px */
+  --type-body-leading: 1.75;
+  --type-body-weight:  400;
+
+  /* subsection — serif text with a mono enumerator, e.g. (a) (1) */
+  --type-subsection-family:            var(--font-serif-reading);
+  --type-subsection-enumerator-family: var(--font-mono);
+  --type-subsection-size:              1.0625rem; /* 17px */
+  --type-subsection-leading:           1.7;
+  --type-subsection-weight:            400;
+
+  /* metadata-label — sans labels ("Codified through", "Ordinance") */
+  --type-metadata-label-family:  var(--font-sans);
+  --type-metadata-label-size:    0.8125rem; /* 13px */
+  --type-metadata-label-leading: 1.4;
+  --type-metadata-label-weight:  500;
+
+  /* breadcrumb — sans navigation trail */
+  --type-breadcrumb-family:  var(--font-sans);
+  --type-breadcrumb-size:    0.875rem; /* 14px */
+  --type-breadcrumb-leading: 1.4;
+  --type-breadcrumb-weight:  400;
+
+  /* toc — sans contents tree */
+  --type-toc-family:  var(--font-sans);
+  --type-toc-size:    0.875rem; /* 14px */
+  --type-toc-leading: 1.5;
+  --type-toc-weight:  400;
 
   /* ----------------------------------------------------------------------- *
    * SPACING — 4px scale
