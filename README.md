@@ -60,6 +60,7 @@ node scripts/check-design-tokens.mjs   # CI: assert vendored copy == pinned tag
 | Actions | `--action-primary`, `--action-primary-hover`, `--action-primary-press` |
 | Accent | `--accent` (active/links) |
 | Citation | `--accent-citation`, `--accent-citation-surface`, `--accent-citation-hover` — render only on federated citation surfaces (Codify, Archive), not Platform |
+| Status / feedback | `--status-{success,warning,danger,info,neutral}-{fg,surface,border}` — light-only. `-fg` is AA-legible text/icon, `-surface` a 12% tint, `-border` the highlight hue. Workflow mapping: danger=overdue, warning=needs-attention, neutral=waiting, success=complete, info=informational |
 | Text | `--text-body`, `--text-muted` |
 | On-navy | `--on-navy`, `--on-navy-muted`, `--on-navy-accent` (AA-verified on navy + raised navy) |
 | Chips | `--chip-on-navy-*`, `--chip-on-light-*` |
@@ -96,3 +97,15 @@ mirror.
 
 All pass AA for normal text (≥ 4.5:1). `teal-deep` is illegible on navy — the
 shell uses `--on-navy-accent` for teal cues.
+
+Status `-fg` colors are AA as text on **both** white and their own 12% `-surface`
+tint; the raw status highlight hue (used by `-border`) is **not** AA as text and
+must not be used for text — use `-fg`.
+
+| Status `-fg` | on white | on its `-surface` tint |
+|--------------|----------|------------------------|
+| `--status-success-fg` `#15673A` | 6.92:1 | 5.96:1 |
+| `--status-warning-fg` `#8A5200` | 6.39:1 | 5.51:1 |
+| `--status-danger-fg` `#9A1C13` | 8.24:1 | 6.76:1 |
+| `--status-info-fg` `#155E9C` | 6.75:1 | 5.74:1 |
+| `--status-neutral-fg` `#525252` | 7.81:1 | 6.67:1 |
