@@ -49,6 +49,19 @@
   --gt-teal-deep:       #0F6E56;  --gt-teal-deep-hsl:   165 76% 25%;
   --gt-teal-press:      #0B5743;  --gt-teal-press-hsl:  164 78% 19%;
 
+  /* Feedback / status ramp (light-only — consistent with this contract's no-dark
+   * stance). Each status ships a highlight hue (icons, borders) plus a -deep shade
+   * for AA-legible TEXT on white and on the 12% tint. AA ratios in the README. */
+  --gt-success:        #1F8A4C;  --gt-success-hsl:      145 63% 33%;
+  --gt-success-deep:   #15673A;  --gt-success-deep-hsl: 147 66% 24%;
+  --gt-warning:        #B26A00;  --gt-warning-hsl:       36 100% 35%;
+  --gt-warning-deep:   #8A5200;  --gt-warning-deep-hsl:  36 100% 27%;
+  --gt-danger:         #B42318;  --gt-danger-hsl:         4 76% 40%;
+  --gt-danger-deep:    #9A1C13;  --gt-danger-deep-hsl:    4 78% 34%;
+  --gt-info:           #1D6FB8;  --gt-info-hsl:         208 73% 42%;
+  --gt-info-deep:      #155E9C;  --gt-info-deep-hsl:    208 76% 35%;
+  --gt-gray-deep:      #525252;  --gt-gray-deep-hsl:      0  0% 32%;
+
   /* On-navy foregrounds (defined explicitly for the shell — not in the spec) */
   --gt-on-navy:         #FAFAF7;  --gt-on-navy-hsl:      60 23% 97%;
   --gt-on-navy-muted:   #9AA6BD;  --gt-on-navy-muted-hsl:        219 21% 67%;
@@ -109,6 +122,29 @@
   --chip-on-navy-fg:       var(--on-navy-accent);
   --chip-on-light-bg:      color-mix(in srgb, var(--accent) 12%, var(--surface-card));
   --chip-on-light-fg:      var(--action-primary);
+
+  /* Status / feedback — light-only. Per status: -fg (AA-legible text/icon),
+   * -surface (12% tint on the card), -border (the highlight hue). Lifecycle
+   * mapping for workflow surfaces (e.g. Elections runway states):
+   *   danger = overdue/error · warning = needs-attention · neutral = waiting/
+   *   inactive · success = complete · info = informational.
+   * Use -fg for text (the raw highlight hue is NOT AA as text — it's for borders
+   * and icons). Light-only: no dark variants — see README. */
+  --status-success-fg:      var(--gt-success-deep);
+  --status-success-surface: color-mix(in srgb, var(--gt-success) 12%, var(--surface-card));
+  --status-success-border:  var(--gt-success);
+  --status-warning-fg:      var(--gt-warning-deep);
+  --status-warning-surface: color-mix(in srgb, var(--gt-warning) 12%, var(--surface-card));
+  --status-warning-border:  var(--gt-warning);
+  --status-danger-fg:       var(--gt-danger-deep);
+  --status-danger-surface:  color-mix(in srgb, var(--gt-danger) 12%, var(--surface-card));
+  --status-danger-border:   var(--gt-danger);
+  --status-info-fg:         var(--gt-info-deep);
+  --status-info-surface:    color-mix(in srgb, var(--gt-info) 12%, var(--surface-card));
+  --status-info-border:     var(--gt-info);
+  --status-neutral-fg:      var(--gt-gray-deep);
+  --status-neutral-surface: color-mix(in srgb, var(--gt-gray) 12%, var(--surface-card));
+  --status-neutral-border:  var(--gt-gray);
 
   /* ----------------------------------------------------------------------- *
    * TYPOGRAPHY — font families + the legal-document type scale
