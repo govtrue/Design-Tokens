@@ -60,6 +60,7 @@ node scripts/check-design-tokens.mjs   # CI: assert vendored copy == pinned tag
 | Actions | `--action-primary`, `--action-primary-hover`, `--action-primary-press` |
 | Accent | `--accent` (active/links) |
 | Citation | `--accent-citation`, `--accent-citation-surface`, `--accent-citation-hover` — render only on federated citation surfaces (Codify, Archive), not Platform |
+| True | `--accent-true` `#EA580C`, `--accent-true-hover` `#C2410C` — the True assistant activation button (GAX header). Brand orange, deliberately distinct from the warning ramp. Graphical/large-label affordance carrying the on-navy label (~3.4:1 — AA graphical, not small body text) |
 | Status / feedback | `--status-{success,warning,danger,info,neutral}-{fg,surface,border}` — light-only. `-fg` is AA-legible text/icon, `-surface` a 12% tint, `-border` the highlight hue. Workflow mapping: danger=overdue, warning=needs-attention, neutral=waiting, success=complete, info=informational |
 | Text | `--text-body`, `--text-muted` |
 | On-navy | `--on-navy`, `--on-navy-muted`, `--on-navy-accent` (AA-verified on navy + raised navy) |
