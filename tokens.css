@@ -49,6 +49,12 @@
   --gt-teal-deep:       #0F6E56;  --gt-teal-deep-hsl:   165 76% 25%;
   --gt-teal-press:      #0B5743;  --gt-teal-press-hsl:  164 78% 19%;
 
+  /* True assistant / brand accent ramp — the ratified GovTrue True orange. A
+   * distinct brand hue, deliberately SEPARATE from the warning ramp (which reads
+   * as needs-attention); see semantic --accent-true. */
+  --gt-true:            #EA580C;  --gt-true-hsl:         21 90% 48%;
+  --gt-true-deep:       #C2410C;  --gt-true-deep-hsl:    17 88% 40%;
+
   /* Feedback / status ramp (light-only — consistent with this contract's no-dark
    * stance). Each status ships a highlight hue (icons, borders) plus a -deep shade
    * for AA-legible TEXT on white and on the 12% tint. AA ratios in the README. */
@@ -104,6 +110,13 @@
   --accent-citation-surface: color-mix(in srgb, var(--accent-citation) 12%, var(--surface-card)); /* tinted badge background */
   --accent-citation-fg:      var(--gt-teal-deep); /* AA-legible text/numerals on -surface (5.42:1) and white (6.20:1); --accent-citation stays the highlight for borders/icons */
   --accent-citation-hover:   var(--gt-teal-deep); /* deepen on hover/active */
+  /* True assistant accent — the ratified GovTrue brand orange for the True
+   * activation button in the GAX header. Its own brand hue, deliberately NOT the
+   * warning ramp. Fill carries the on-navy (warm-white) label; the button is a
+   * graphical/large-label affordance (icon + bold label), not body text. GAX
+   * consumes this as --gax-true-accent. */
+  --accent-true:           var(--gt-true);       /* True button fill */
+  --accent-true-hover:     var(--gt-true-deep);  /* deepen on hover/active */
 
   /* Text */
   --text-body:             var(--gt-ink);
