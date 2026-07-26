@@ -1,0 +1,34 @@
+# Design-token contract validation.
+#
+# This repo is the estate SSOT: Platform, Codify, Archive, Meetings, Obligations
+# and Licensing each vendor a BYTE-IDENTICAL copy of tokens.css + tokens.json and
+# guard it with a drift-check against an immutable version tag. Those checks prove
+# "my copy matches the SSOT" -- none of them proves the SSOT is internally
+# coherent. An incoherent commit here therefore propagates to every consumer at
+# the next tag with all downstream drift-checks still green.
+#
+# This workflow closes that gap. It is the repo's only CI, and deliberately so:
+# the repository has no build step, no package manager and no dependencies, and
+# the validator is stdlib Python with no network access.
+name: Validate tokens
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate token contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      # ubuntu-latest ships python3; the validator is stdlib-only, so there is
+      # nothing to set up and nothing to install.
+      - name: Validate design-token contract
+        run: python3 scripts/validate_tokens.py
