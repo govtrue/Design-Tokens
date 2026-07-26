@@ -52,6 +52,43 @@ node scripts/sync-design-tokens.mjs    # fetch pinned tag -> overwrite vendored 
 node scripts/check-design-tokens.mjs   # CI: assert vendored copy == pinned tag
 ```
 
+## Contract validation (CI)
+
+The consumer drift-checks above prove *"my vendored copy matches the SSOT."*
+Nothing in them proves *the SSOT is internally coherent* — so an incoherent
+commit here would propagate to every consumer at the next tag with all of their
+drift-checks still green.
+
+`scripts/validate_tokens.py` closes that gap and runs in CI on every push and
+pull request. It is stdlib Python, no network, no dependencies — this repo keeps
+its no-build-step, no-package-manager posture.
+
+```
+python3 scripts/validate_tokens.py
+```
+
+It enforces what the files already claim about themselves:
+
+1. `tokens.json` parses and declares the sections consumers read.
+2. **Raw parity** — `tokens.css` and `tokens.json` agree on raw token names and
+   hex values ("hex values are authoritative").
+3. **HSL exactness** — every `--gt-*-hsl` mirror, in both files, is *recomputed*
+   from its hex and must match ("the mirror is a derived, exact conversion").
+4. **Semantic resolution** — every `var(--gt-*)` resolves to a defined raw token,
+   and each JSON semantic entry agrees on both the ref and its hex.
+5. **Mirrored non-color values** — spacing, radii, shadows, motion, font families
+   and the per-role type scale agree between the two files.
+
+It deliberately does **not** require every `tokens.css` token to appear in
+`tokens.json`. `tokens.json` is a *curated* mirror for non-CSS consumers, not a
+one-to-one dump — `--chip-*`, for instance, is CSS-only by design. Asserting full
+parity would fail on intent rather than on error.
+
+Derived values are handled as such: where `tokens.css` computes a token via
+`color-mix()`, `tokens.json` records `ref` as a description of the mix
+(`"teal 12% on white"`) rather than a raw token name, and the validator exempts
+those from name resolution.
+
 ## Token groups
 
 | Group | Tokens |
