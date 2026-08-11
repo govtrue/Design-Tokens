@@ -30,5 +30,8 @@ jobs:
 
       # ubuntu-latest ships python3; the validator is stdlib-only, so there is
       # nothing to set up and nothing to install.
+      - name: Test token validator
+        run: python3 -m unittest discover -s tests
+
       - name: Validate design-token contract
         run: python3 scripts/validate_tokens.py
