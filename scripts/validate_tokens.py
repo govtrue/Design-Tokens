@@ -55,6 +55,11 @@ SEM_VAR_RE = re.compile(r"^\s*--(?!gt-)([a-z0-9-]+):\s*var\(--gt-([a-z0-9-]+)\)\
 DECL_RE = re.compile(r"^\s*--([a-z0-9-]+):\s*(.+?);\s*$", re.M)
 VAR_REF_RE = re.compile(r"var\(--gt-([a-z0-9-]+)\)")
 
+
+class CssSyntaxError(ValueError):
+    """Raised when tokens.css contains malformed syntax we must reject."""
+
+
 # CSS custom property -> path into tokens.json, for the non-color scales.
 SCALE_MAP: dict[str, tuple[str, ...]] = {}
 for _n in range(1, 11):
@@ -82,8 +87,46 @@ TYPE_ROLES = (
 
 
 def strip_comments(text: str) -> str:
-    """Remove /* ... */ blocks so commentary never parses as a declaration."""
-    return re.sub(r"/\*.*?\*/", "", text, flags=re.S)
+    """Remove CSS comments in linear time while preserving quoted values."""
+    output: list[str] = []
+    index = 0
+    quote: str | None = None
+    in_comment = False
+
+    while index < len(text):
+        if in_comment:
+            if text.startswith("*/", index):
+                in_comment = False
+                index += 2
+            else:
+                index += 1
+            continue
+
+        char = text[index]
+        if quote is not None:
+            output.append(char)
+            if char == "\\" and index + 1 < len(text):
+                index += 1
+                output.append(text[index])
+            elif char == quote:
+                quote = None
+            index += 1
+            continue
+
+        if text.startswith("/*", index):
+            in_comment = True
+            index += 2
+            continue
+
+        output.append(char)
+        if char in ('"', "'"):
+            quote = char
+        index += 1
+
+    if in_comment:
+        raise CssSyntaxError("unterminated CSS comment")
+
+    return "".join(output)
 
 
 def hex_to_hsl(hex_value: str) -> tuple[int, int, int]:
@@ -128,7 +171,11 @@ def main() -> int:
             print(f"FAIL: missing required file {path.name}", file=sys.stderr)
             return 1
 
-    css = strip_comments(CSS_PATH.read_text(encoding="utf-8"))
+    try:
+        css = strip_comments(CSS_PATH.read_text(encoding="utf-8"))
+    except CssSyntaxError as exc:
+        print(f"FAIL: tokens.css is not valid CSS: {exc}", file=sys.stderr)
+        return 1
 
     # --- 1. tokens.json parses and declares its sections -------------------
     try:
