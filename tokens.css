@@ -1,4 +1,4 @@
-/* SINGLE SOURCE OF TRUTH — github.com/Amplifygov/govtrue-design-tokens
+/* SINGLE SOURCE OF TRUTH — github.com/govtrue/Design-Tokens
  * =============================================================================
  * This file is the canonical GovTrue token contract. Consumer repos (Platform,
  * Codify, Archive) vendor a BYTE-IDENTICAL copy and guard it with a drift-check

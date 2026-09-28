@@ -46,6 +46,12 @@ moving `latest` tag — a moving tag could flip a consumer's CI red with no loca
 change, or mask real drift. To roll a change out: cut the new tag here, then bump
 each consumer's `VERSION` and re-run its sync script.
 
+The repository identity change in `tokens.css` changes the authoritative bytes.
+Release it as the next immutable tag, `v1.4.1`, after the repository is renamed
+to `govtrue/Design-Tokens`. Consumers keep their existing `v1.4.0` copy until
+that tag exists, then sync the new files and record the new CSS SHA-256. The
+`v1.4.0` tag and its bytes remain historical evidence.
+
 ```
 # in a consumer repo
 node scripts/sync-design-tokens.mjs    # fetch pinned tag -> overwrite vendored copy
